@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'ProfilePage.dart';
+import 'RequestPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               width: 500,
               child: InkWell(
                 onTap: () {
-                  // Handle request button press
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RequestPage()));
                 },
                 child: Material(
                   elevation: 5,

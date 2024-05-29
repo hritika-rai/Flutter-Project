@@ -21,7 +21,7 @@ final userRepositoryProvider = AutoDisposeProvider<UserRepository>.internal(
 );
 
 typedef UserRepositoryRef = AutoDisposeProviderRef<UserRepository>;
-String _$userNotifierHash() => r'12772828404e91c5a00440bfd79db3d71171c067';
+String _$userNotifierHash() => r'23759e0d3948090fed015a7dab7a492279e33d9f';
 
 /// See also [UserNotifier].
 @ProviderFor(UserNotifier)
