@@ -23,6 +23,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   final List<String> genders = ['Male', 'Female', 'Other'];
   String? _selectedGender;
 
+  bool _isInitialLoad = true;
+
   @override
   void initState() {
     super.initState();
@@ -81,68 +83,141 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   return const Center(child: Text('User information not available'));
                 } else {
                   final user = snapshot.data!;
-                  if (_selectedBloodGroup == null) _selectedBloodGroup = user.bloodGroup;
-                  if (_selectedGender == null) _selectedGender = user.gender;
-                  _nameController.text = user.name;
-                  _contactNumberController.text = user.contactNumber;
+                  if (_isInitialLoad) {
+                    _nameController.text = user.name;
+                    _selectedBloodGroup = user.bloodGroup;
+                    _contactNumberController.text = user.contactNumber;
+                    _selectedGender = user.gender;
+                    _isInitialLoad = false;
+                  }
 
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            controller: _nameController,
-                            decoration: const InputDecoration(labelText: 'Name'),
-                            validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 150,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/header.jpg'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 20,
+                              top: 70,
+                              child: Text(
+                                'Profile',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 21,
+                              top: 110,
+                              child: Text(
+                                'View or update your profile',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: TextFormField(
+                                    controller: _nameController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Name',
+                                      labelStyle: TextStyle(fontSize: 25),
+                                    ),
+                                    style: const TextStyle(fontSize: 20),
+                                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: DropdownButtonFormField<String>(
+                                    value: _selectedBloodGroup,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedBloodGroup = value;
+                                      });
+                                    },
+                                    items: bloodGroups.map((group) {
+                                      return DropdownMenuItem<String>(
+                                        value: group,
+                                        child: Text(group, style: TextStyle(fontSize: 20)),
+                                      );
+                                    }).toList(),
+                                    decoration: const InputDecoration(
+                                      labelText: 'Blood Group',
+                                      labelStyle: TextStyle(fontSize: 25),
+                                    ),
+                                    validator: (value) => value == null || value.isEmpty ? 'Please select a blood group' : null,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: TextFormField(
+                                    controller: _contactNumberController,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Contact Number',
+                                      labelStyle: TextStyle(fontSize: 25),
+                                    ),
+                                    style: const TextStyle(fontSize: 20),
+                                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a contact number' : null,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: DropdownButtonFormField<String>(
+                                    value: _selectedGender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedGender = value;
+                                      });
+                                    },
+                                    items: genders.map((gender) {
+                                      return DropdownMenuItem<String>(
+                                        value: gender,
+                                        child: Text(gender, style: TextStyle(fontSize: 20)),
+                                      );
+                                    }).toList(),
+                                    decoration: const InputDecoration(
+                                      labelText: 'Gender',
+                                      labelStyle: TextStyle(fontSize: 25),
+                                    ),
+                                    validator: (value) => value == null || value.isEmpty ? 'Please select a gender' : null,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                  child: ElevatedButton(
+                                    onPressed: _submitForm,
+                                    child: const Text('Save'),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          DropdownButtonFormField<String>(
-                            value: _selectedBloodGroup,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedBloodGroup = value;
-                              });
-                            },
-                            items: bloodGroups.map((group) {
-                              return DropdownMenuItem<String>(
-                                value: group,
-                                child: Text(group),
-                              );
-                            }).toList(),
-                            decoration: const InputDecoration(labelText: 'Blood Group'),
-                            validator: (value) =>
-                                value?.isEmpty ?? true ? 'Please select a blood group' : null,
-                          ),
-                          TextFormField(
-                            controller: _contactNumberController,
-                            decoration: const InputDecoration(labelText: 'Contact Number'),
-                            validator: (value) =>
-                                value?.isEmpty ?? true ? 'Please enter a contact number' : null,
-                          ),
-                          DropdownButtonFormField<String>(
-                            value: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value;
-                              });
-                            },
-                            items: genders.map((gender) {
-                              return DropdownMenuItem<String>(
-                                value: gender,
-                                child: Text(gender),
-                              );
-                            }).toList(),
-                            decoration: const InputDecoration(labelText: 'Gender'),
-                            validator: (value) =>
-                                value?.isEmpty ?? true ? 'Please select a gender' : null,
-                          ),
-                          ElevatedButton(
-                            onPressed: _submitForm,
-                            child: const Text('Save'),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 }
