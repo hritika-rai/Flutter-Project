@@ -23,8 +23,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   final List<String> genders = ['Male', 'Female', 'Other'];
   String? _selectedGender;
 
-  bool _isInitialLoad = true;
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +31,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       _userFuture = ref.read(userNotifierProvider.notifier).loadUser(currentUser.uid);
     }
 
-    // Add listeners to text controllers
     _nameController.addListener(_onFieldChanged);
     _contactNumberController.addListener(_onFieldChanged);
   }
@@ -83,13 +80,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   return const Center(child: Text('User information not available'));
                 } else {
                   final user = snapshot.data!;
-                  if (_isInitialLoad) {
-                    _nameController.text = user.name;
-                    _selectedBloodGroup = user.bloodGroup;
-                    _contactNumberController.text = user.contactNumber;
-                    _selectedGender = user.gender;
-                    _isInitialLoad = false;
-                  }
+                  if (_selectedBloodGroup == null) _selectedBloodGroup = user.bloodGroup;
+                  if (_selectedGender == null) _selectedGender = user.gender;
+                  _nameController.text = user.name;
+                  _contactNumberController.text = user.contactNumber;
 
                   return SingleChildScrollView(
                     child: Column(
@@ -104,6 +98,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   image: AssetImage('assets/images/header.jpg'),
                                   fit: BoxFit.cover,
                                 ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 320,
+                              top: 40,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }, 
+                                child: Text(
+                                  'Back',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25
+                                  ),
+                                ),
+                                
                               ),
                             ),
                             Positioned(
@@ -126,7 +137,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 17,
-                                  // fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -137,77 +147,73 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           child: Form(
                             key: _formKey,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: TextFormField(
-                                    controller: _nameController,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Name',
-                                      labelStyle: TextStyle(fontSize: 25),
-                                    ),
-                                    style: const TextStyle(fontSize: 20),
-                                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
+                                TextFormField(
+                                  controller: _nameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    labelStyle: TextStyle(fontSize: 25),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   ),
+                                  style: TextStyle(fontSize: 20),
+                                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: DropdownButtonFormField<String>(
-                                    value: _selectedBloodGroup,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedBloodGroup = value;
-                                      });
-                                    },
-                                    items: bloodGroups.map((group) {
-                                      return DropdownMenuItem<String>(
-                                        value: group,
-                                        child: Text(group, style: TextStyle(fontSize: 20)),
-                                      );
-                                    }).toList(),
-                                    decoration: const InputDecoration(
-                                      labelText: 'Blood Group',
-                                      labelStyle: TextStyle(fontSize: 25),
-                                    ),
-                                    validator: (value) => value == null || value.isEmpty ? 'Please select a blood group' : null,
+                                SizedBox(height: 20), // Padding between fields
+                                DropdownButtonFormField<String>(
+                                  value: _selectedBloodGroup,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedBloodGroup = value;
+                                    });
+                                  },
+                                  items: bloodGroups.map((group) {
+                                    return DropdownMenuItem<String>(
+                                      value: group,
+                                      child: Text(group, style: TextStyle(fontSize: 20)),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    labelText: 'Blood Group',
+                                    labelStyle: TextStyle(fontSize: 25),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   ),
+                                  validator: (value) => value?.isEmpty ?? true ? 'Please select a blood group' : null,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: TextFormField(
-                                    controller: _contactNumberController,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Contact Number',
-                                      labelStyle: TextStyle(fontSize: 25),
-                                    ),
-                                    style: const TextStyle(fontSize: 20),
-                                    validator: (value) => value?.isEmpty ?? true ? 'Please enter a contact number' : null,
+                                SizedBox(height: 20), // Padding between fields
+                                TextFormField(
+                                  controller: _contactNumberController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Contact Number',
+                                    labelStyle: TextStyle(fontSize: 25),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   ),
+                                  style: TextStyle(fontSize: 20),
+                                  validator: (value) => value?.isEmpty ?? true ? 'Please enter a contact number' : null,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: DropdownButtonFormField<String>(
-                                    value: _selectedGender,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedGender = value;
-                                      });
-                                    },
-                                    items: genders.map((gender) {
-                                      return DropdownMenuItem<String>(
-                                        value: gender,
-                                        child: Text(gender, style: TextStyle(fontSize: 20)),
-                                      );
-                                    }).toList(),
-                                    decoration: const InputDecoration(
-                                      labelText: 'Gender',
-                                      labelStyle: TextStyle(fontSize: 25),
-                                    ),
-                                    validator: (value) => value == null || value.isEmpty ? 'Please select a gender' : null,
+                                SizedBox(height: 20), // Padding between fields
+                                DropdownButtonFormField<String>(
+                                  value: _selectedGender,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedGender = value;
+                                    });
+                                  },
+                                  items: genders.map((gender) {
+                                    return DropdownMenuItem<String>(
+                                      value: gender,
+                                      child: Text(gender, style: TextStyle(fontSize: 20)),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    labelText: 'Gender',
+                                    labelStyle: TextStyle(fontSize: 25),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                   ),
+                                  validator: (value) => value?.isEmpty ?? true ? 'Please select a gender' : null,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                SizedBox(height: 30), // Padding before the button
+                                Center(
                                   child: ElevatedButton(
                                     onPressed: _submitForm,
                                     child: const Text('Save'),
