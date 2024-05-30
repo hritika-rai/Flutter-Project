@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart'; // For generating random IDs
 import '../models/request_model.dart';
+import '../provider/loading_provider.dart';
 import '../provider/request_provider.dart';
 import 'package:intl/intl.dart';
 
@@ -28,6 +29,8 @@ class _RequestPageState extends ConsumerState<RequestPage> {
   final List<String> _bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   final List<String> _genders = ['Male', 'Female', 'Other'];
 
+  // final isLoading = ref.watch(loadingProvider).state;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +51,12 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
+                    // onPressed: () async {
+                    //     ref.read(loadingProvider).state = true;
+                    //     await Future.delayed(Duration(seconds: 2)); // Simulate a loading delay
+                    //     ref.read(loadingProvider).state = false;
+                    //     Navigator.of(context).pop();
+                    // },
                   }, 
                   child: Text(
                     'Back',

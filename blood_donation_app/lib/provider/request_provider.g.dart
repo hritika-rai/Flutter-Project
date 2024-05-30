@@ -22,7 +22,7 @@ final requestRepositoryProvider =
 );
 
 typedef RequestRepositoryRef = AutoDisposeProviderRef<RequestRepository>;
-String _$requestNotifierHash() => r'816fb6f7d66054d293d145f1944782fb1b3d762f';
+String _$requestNotifierHash() => r'a800a64f8f6e8726c77ccfb2263820762c0f2a4a';
 
 /// See also [RequestNotifier].
 @ProviderFor(RequestNotifier)

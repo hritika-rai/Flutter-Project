@@ -45,6 +45,8 @@ class Request {
 
   Map<String, dynamic> toMap() {
     return {
+      'userId': userId,
+      'requestId': requestId,
       'name': name,
       'bloodGroup': bloodGroup,
       'numberOfUnits': numberOfUnits,
