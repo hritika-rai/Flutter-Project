@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Request {
+class Donate {
   final String userId;
-  final String requestId;
+  final String donateId;
   final String name;
   final String bloodGroup;
   final int numberOfUnits;
@@ -13,9 +13,9 @@ class Request {
   final String phoneNumber;
   final String age;
 
-  Request({
+  Donate({
     required this.userId,
-    required this.requestId,
+    required this.donateId,
     required this.name,
     required this.bloodGroup,
     required this.numberOfUnits,
@@ -27,43 +27,42 @@ class Request {
     required this.age,
   });
 
-  factory Request.fromMap(Map<String, dynamic> data, String requestId, String userId) {
+  factory Donate.fromMap(Map<String, dynamic> data, String donateId, String userId) {
     DateTime parsedDate;
     try {
       parsedDate = DateTime.parse(data['date']);
     } catch (e) {
       print('Error parsing date: $e');
-      parsedDate = DateTime.now(); 
+      parsedDate = DateTime.now();
     }
-    return Request(
+    return Donate(
       userId: userId,
-      requestId: requestId,
+      donateId: donateId,
       name: data['name'] ?? 'Unknown',
       bloodGroup: data['bloodGroup'] ?? 'Unknown',
       numberOfUnits: data['numberOfUnits'] ?? 0,
       date: parsedDate,
       gender: data['gender'] ?? 'Unknown',
       hospitalName: data['hospitalName'] ?? 'Unknown',
-      location: data['location'] ?? 'Unknown',
-      phoneNumber: data['phoneNumber'] ?? 'Unknown',
-      age: data['age'] ?? 'Unknown',
+location: data['location'] ?? 'Unknown',
+phoneNumber: data['phoneNumber'] ?? 'Unknown',
+age: data['age'] ?? 'Unknown',
+);
+}
 
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'userId': userId,
-      'requestId': requestId,
-      'name': name,
-      'bloodGroup': bloodGroup,
-      'numberOfUnits': numberOfUnits,
-      'date': date.toIso8601String(),
-      'gender': gender,
-      'hospitalName': hospitalName,
-      'location': location,
-      'phoneNumber': phoneNumber,
-      'age':age,
-    };
-  }
+Map<String, dynamic> toMap() {
+return {
+'userId': userId,
+'donateId': donateId,
+'name': name,
+'bloodGroup': bloodGroup,
+'numberOfUnits': numberOfUnits,
+'date': date.toIso8601String(),
+'gender': gender,
+'hospitalName': hospitalName,
+'location': location,
+'phoneNumber': phoneNumber,
+'age': age,
+};
+}
 }

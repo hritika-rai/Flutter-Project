@@ -1,3 +1,4 @@
+import 'package:blood_donation_app/screens/DonatePage.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
                 SizedBox(height: 20), 
-                _buildListItem(context, 'Donate', 'assets/images/logo.png', HomePage()),
+                _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
               ],
             ),
             SizedBox(height: 30),
