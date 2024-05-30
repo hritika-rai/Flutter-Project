@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_model.dart';
 import '../provider/user_provider.dart';
+import 'HomePage.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -229,6 +230,38 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 }
               },
             ),
+            bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+              },
+              child: Icon(Icons.home, ),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonorPage()));
+              },
+              child: Icon(Icons.search),
+            ),
+            label: 'Find Donor',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+              },
+              child: Icon(Icons.person, color: Colors.red,),
+            ),
+            label: 'Profile',
+          ),
+        ],
+      ),
+
     );
   }
 }
