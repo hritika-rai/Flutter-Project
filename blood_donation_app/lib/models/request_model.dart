@@ -12,6 +12,7 @@ class Request {
   final String location;
   final String phoneNumber;
   final String age;
+  final bool accepted;
 
   Request({
     required this.userId,
@@ -25,6 +26,7 @@ class Request {
     required this.location,
     required this.phoneNumber,
     required this.age,
+    required this.accepted,
   });
 
   factory Request.fromMap(Map<String, dynamic> data, String requestId, String userId) {
@@ -47,7 +49,7 @@ class Request {
       location: data['location'] ?? 'Unknown',
       phoneNumber: data['phoneNumber'] ?? 'Unknown',
       age: data['age'] ?? 'Unknown',
-
+      accepted: data['accepted'] ?? false,
     );
   }
 
@@ -64,6 +66,7 @@ class Request {
       'location': location,
       'phoneNumber': phoneNumber,
       'age':age,
+      'accepted': accepted,
     };
   }
 }

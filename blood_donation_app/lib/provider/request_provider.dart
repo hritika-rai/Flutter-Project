@@ -40,6 +40,16 @@ class RequestNotifier extends _$RequestNotifier {
     }
   }
 
+  Future<List<Request>> loadOtherRequests(String userId) async {
+    try {
+      final otherRequests = await repository.getOtherRequests(userId);
+      return otherRequests;
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+      return [];
+    }
+  }
+
   Future<void> updateRequest(Request request) async {
     state = const AsyncValue.loading();
     try {

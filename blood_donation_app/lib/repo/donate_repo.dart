@@ -7,7 +7,7 @@ class DonateRepository {
   Future<void> addDonate(Donate donate) async {
     print('In add Donate');
     try {
-      await _firestore.collection('Donates').doc(donate.donateId).set(donate.toMap());
+      await _firestore.collection('Donars').doc(donate.donateId).set(donate.toMap());
       print('added donate');
     } catch (e) {
       print('Error adding donate: $e');
@@ -16,7 +16,7 @@ class DonateRepository {
 
   Future<List<Donate>> getDonates(String userId) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('Donates')
+      QuerySnapshot querySnapshot = await _firestore.collection('Donars')
           .where('userId', isEqualTo: userId)
           .get();
       return querySnapshot.docs.map((doc) => Donate.fromMap(doc.data() as Map<String, dynamic>, doc.id, userId)).toList();
@@ -28,7 +28,7 @@ class DonateRepository {
 
   Future<void> updateDonate(Donate donate) async {
     try {
-      await _firestore.collection('Donates').doc(donate.donateId).update(donate.toMap());
+      await _firestore.collection('Donars').doc(donate.donateId).update(donate.toMap());
     } catch (e) {
       print('Error updating donate: $e');
     }

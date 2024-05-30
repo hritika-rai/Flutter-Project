@@ -7,14 +7,14 @@ import '../models/request_model.dart';
 import '../provider/request_provider.dart';
 import 'RequestCard.dart';
 
-class RequestList extends ConsumerStatefulWidget {
-  const RequestList({Key? key}) : super(key: key);
+class OtherRequestList extends ConsumerStatefulWidget {
+  const OtherRequestList({Key? key}) : super(key: key);
 
   @override
-  _RequestListState createState() => _RequestListState();
+  _OtherRequestListState createState() => _OtherRequestListState();
 }
 
-class _RequestListState extends ConsumerState<RequestList> {
+class _OtherRequestListState extends ConsumerState<OtherRequestList> {
   late Future<List<Request>> _requestsFuture;
   String _filter = "All"; // Initially show all requests
 
@@ -23,7 +23,7 @@ class _RequestListState extends ConsumerState<RequestList> {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      _requestsFuture = ref.read(requestNotifierProvider.notifier).loadRequests(currentUser.uid);
+      _requestsFuture = ref.read(requestNotifierProvider.notifier).loadOtherRequests(currentUser.uid);
     }
   }
 
@@ -85,38 +85,6 @@ class _RequestListState extends ConsumerState<RequestList> {
             ],
           ),
           SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FilterButton(
-                text: 'All',
-                selectedFilter: _filter,
-                onSelect: () {
-                  setState(() {
-                    _filter = 'All';
-                  });
-                },
-              ),
-              FilterButton(
-                text: 'Accepted',
-                selectedFilter: _filter,
-                onSelect: () {
-                  setState(() {
-                    _filter = 'Accepted';
-                  });
-                },
-              ),
-              FilterButton(
-                text: 'Pending',
-                selectedFilter: _filter,
-                onSelect: () {
-                  setState(() {
-                    _filter = 'Pending';
-                  });
-                },
-              ),
-            ],
-          ),
           Expanded(
             child: FutureBuilder<List<Request>>(
               future: _requestsFuture,
@@ -161,34 +129,6 @@ class _RequestListState extends ConsumerState<RequestList> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class FilterButton extends StatelessWidget {
-  final String text;
-  final String selectedFilter;
-  final VoidCallback onSelect;
-
-  const FilterButton({
-    required this.text,
-    required this.selectedFilter,
-    required this.onSelect,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onSelect,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: selectedFilter == text ? Colors.white : Color.fromARGB(255, 239, 68, 96),
-        foregroundColor: selectedFilter == text ? Color.fromARGB(255, 239, 68, 96) : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: selectedFilter == text ? Color.fromARGB(255, 239, 68, 96) : Colors.transparent),
-        ),
-      ),
-      child: Text(text),
     );
   }
 }

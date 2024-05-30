@@ -345,6 +345,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
           hospitalName: _hospitalNameController.text,
           location: _locationController.text,
           phoneNumber: _phoneNumberController.text,
+          accepted: false,
         );
         ref.read(requestNotifierProvider.notifier).addRequest(request);
 

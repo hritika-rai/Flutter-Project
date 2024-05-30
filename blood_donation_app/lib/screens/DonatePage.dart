@@ -18,9 +18,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _bloodGroupController = TextEditingController();
   final TextEditingController _numberOfUnitsController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
-  final TextEditingController _hospitalNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
@@ -181,41 +179,6 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        'Date',
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      TextFormField(
-                        controller: _dateController,
-                        readOnly: true, // Make the field read-only to prevent manual text input
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            onPressed: () async {
-                              final DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2024),
-                                lastDate: DateTime(2101),
-                              );
-                              if (pickedDate != null && pickedDate != _selectedDate) {
-                                setState(() {
-                                  _selectedDate = pickedDate;
-                                  _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a valid date';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Text(
                         'Gender',
                         style: TextStyle(fontSize: 25),
                       ),
@@ -238,23 +201,6 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please select your gender';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Hospital Name',
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      TextFormField(
-                        controller: _hospitalNameController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the hospital name';
                           }
                           return null;
                         },
@@ -332,17 +278,14 @@ class _DonatePageState extends ConsumerState<DonatePage> {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         final donateId = Uuid().v4();
-        final date = DateTime.parse(_dateController.text);
         final donate = Donate(
           userId: currentUser.uid,
           donateId: donateId,
           name: _nameController.text,
           bloodGroup: _bloodGroupController.text,
           numberOfUnits: int.parse(_numberOfUnitsController.text),
-          date: date,
           age: _ageController.text,
           gender: _genderController.text,
-          hospitalName: _hospitalNameController.text,
           location: _locationController.text,
           phoneNumber: _phoneNumberController.text,
         );
@@ -358,9 +301,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
         _nameController.clear();
         _bloodGroupController.clear();
         _numberOfUnitsController.clear();
-        _dateController.clear();
         _genderController.clear();
-        _hospitalNameController.clear();
         _locationController.clear();
         _phoneNumberController.clear();
       }

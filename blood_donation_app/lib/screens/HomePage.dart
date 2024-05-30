@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             
             SizedBox(height: 20),
             Container(
-              height: 200,
+              height: 170,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 255, 237, 232),
                 // color: Color.fromARGB(255, 255, 245, 240),
@@ -69,16 +69,18 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ), 
-            SizedBox(height: 30),
+            SizedBox(height: 25),
             ListView(
               shrinkWrap: true,
               children: [
                 _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
                 SizedBox(height: 20), 
                 _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
+                SizedBox(height: 20), 
+                _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', DonatePage()),
               ],
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             GridView(
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 //_buildGridItem(context, 'Blood banks', 'assets/images/bloodbank.png', HomePage()),
                 //_buildGridItem(context, 'Hospital', 'assets/images/Hospital.png',HomePage()),
                 _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',HomePage()),
-                _buildGridItem(context, 'Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
+                _buildGridItem(context, 'Your Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
               ],
             ),
           ],
