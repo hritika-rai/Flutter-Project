@@ -104,10 +104,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             Positioned(
                               left: 320,
                               top: 40,
-                              child: TextButton(
-                                onPressed: () {
+                              child: GestureDetector(
+                                onTap: () {
                                   Navigator.of(context).pop();
-                                }, 
+                                },
                                 child: Text(
                                   'Back',
                                   style: TextStyle(

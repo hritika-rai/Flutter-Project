@@ -19,11 +19,12 @@ class _RequestPageState extends ConsumerState<RequestPage> {
   final TextEditingController _bloodGroupController = TextEditingController();
   final TextEditingController _numberOfUnitsController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _hospitalNameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+
   DateTime? _selectedDate;
 
   final List<String> _bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -48,16 +49,10 @@ class _RequestPageState extends ConsumerState<RequestPage> {
               Positioned(
                 left: 320,
                 top: 40,
-                child: TextButton(
-                  onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
                     Navigator.of(context).pop();
-                    // onPressed: () async {
-                    //     ref.read(loadingProvider).state = true;
-                    //     await Future.delayed(Duration(seconds: 2)); // Simulate a loading delay
-                    //     ref.read(loadingProvider).state = false;
-                    //     Navigator.of(context).pop();
-                    // },
-                  }, 
+                  },
                   child: Text(
                     'Back',
                     style: TextStyle(
@@ -114,6 +109,25 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Age',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      TextFormField(
+                        controller: _ageController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your age';
                           }
                           return null;
                         },
@@ -181,7 +195,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                               final DateTime? pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
+                                firstDate: DateTime(2024),
                                 lastDate: DateTime(2101),
                               );
                               if (pickedDate != null && pickedDate != _selectedDate) {
@@ -196,27 +210,6 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a valid date';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Time (HH:MM)',
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      TextFormField(
-                        controller: _timeController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a valid time';
-                          }
-                          final RegExp timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
-                          if (!timeRegex.hasMatch(value)) {
-                            return 'Please enter the time in HH:MM format';
                           }
                           return null;
                         },
@@ -340,7 +333,6 @@ class _RequestPageState extends ConsumerState<RequestPage> {
       if (currentUser != null) {
         final requestId = Uuid().v4();
         final date = DateTime.parse(_dateController.text);
-        final time = TimeOfDay.fromDateTime(DateTime.parse('1970-01-01 ${_timeController.text}'));
         final request = Request(
           userId: currentUser.uid,
           requestId: requestId,
@@ -348,7 +340,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
           bloodGroup: _bloodGroupController.text,
           numberOfUnits: int.parse(_numberOfUnitsController.text),
           date: date,
-          time: time,
+          age: _ageController.text,
           gender: _genderController.text,
           hospitalName: _hospitalNameController.text,
           location: _locationController.text,
@@ -367,7 +359,6 @@ class _RequestPageState extends ConsumerState<RequestPage> {
         _bloodGroupController.clear();
         _numberOfUnitsController.clear();
         _dateController.clear();
-        _timeController.clear();
         _genderController.clear();
         _hospitalNameController.clear();
         _locationController.clear();

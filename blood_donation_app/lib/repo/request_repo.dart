@@ -15,19 +15,16 @@ class RequestRepository {
     }
   }
 
-  Future<Request?> getRequest(String requestId, String userId) async {
+  Future<List<Request>> getRequests(String userId) async {
     try {
-      print('in getRequest, requestId: ' + requestId);
-      DocumentSnapshot doc = await _firestore.collection('Requests').doc(requestId).get();
-      print('doc: ' + doc.id);
-      if (doc.exists) {
-        print('in doc.exists');
-        return Request.fromMap(doc.data() as Map<String, dynamic>, doc.id, userId);
-      }
+      QuerySnapshot querySnapshot = await _firestore.collection('Requests')
+          .where('userId', isEqualTo: userId)
+          .get();
+      return querySnapshot.docs.map((doc) => Request.fromMap(doc.data() as Map<String, dynamic>, doc.id, userId)).toList();
     } catch (e) {
-      print('Error fetching request: $e');
+      print('Error fetching user requests: $e');
+      return [];
     }
-    return null;
   }
 
   Future<void> updateRequest(Request request) async {

@@ -19,15 +19,14 @@ class RequestNotifier extends _$RequestNotifier {
     repository = ref.watch(requestRepositoryProvider);
     return const AsyncValue<Request?>.data(null);
   }
-
-  Future<Request?> loadRequest(String requestId, String userId) async {
+  
+  Future<List<Request>> loadRequests(String userId) async {
     try {
-      final request = await repository.getRequest(requestId, userId);
-      state = AsyncValue.data(request);
-      return request;
+      final requests = await repository.getRequests(userId);
+      return requests;
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
-      return null;
+      return [];
     }
   }
 

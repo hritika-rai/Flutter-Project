@@ -1,3 +1,4 @@
+import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 
 import 'ProfilePage.dart';
@@ -33,7 +34,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -67,85 +67,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-            ),
+            ), 
             SizedBox(height: 30),
-            // SizedBox(
-            //   height: 100,
-            //   width: 500,
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       // Handle request button press
-            //     },
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Image.asset(
-            //           'assets/images/request.png',
-            //           height: 60,
-            //           width: 60,
-            //         ),
-            //         SizedBox(width:20),
-            //         Text(
-            //           'Request',
-            //           style: TextStyle(
-            //             fontSize: 25
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     style: ElevatedButton.styleFrom(
-            //       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(10), 
-            //       ),
-            //       backgroundColor: Colors.white,
-            //       elevation: 5,
-            //     ),
-            //   ),
-            // ),
-            SizedBox(
-              height: 100,
-              width: 500,
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RequestPage()));
-                },
-                child: Material(
-                  elevation: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      //border: Border.all(),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Colors.grey.withOpacity(0.5),
-                      //     spreadRadius: 2,
-                      //     blurRadius: 5,
-                      //   ),
-                      // ],
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/request.png',
-                          height: 60,
-                          width: 60,
-                        ),
-                        SizedBox(width: 20),
-                        Text(
-                          'Request',
-                          style: TextStyle(
-                            fontSize: 25,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
+                SizedBox(height: 20), 
+                _buildListItem(context, 'Donate', 'assets/images/logo.png', HomePage()),
+              ],
             ),
             SizedBox(height: 30),
             GridView(
@@ -157,10 +87,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 20,
               ),
               children: [
-                _buildGridItem(context, 'Blood banks', 'assets/images/bloodbank.png'),
-                _buildGridItem(context, 'Hospital', 'assets/images/Hospital.png'),
-                _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png'),
-                _buildGridItem(context, 'Blood Request List', 'assets/images/BloodRequestList.png'),
+                //_buildGridItem(context, 'Blood banks', 'assets/images/bloodbank.png', HomePage()),
+                //_buildGridItem(context, 'Hospital', 'assets/images/Hospital.png',HomePage()),
+                _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',HomePage()),
+                _buildGridItem(context, 'Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
               ],
             ),
           ],
@@ -202,10 +132,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGridItem(BuildContext context, String title, String imagePath) {
+  Widget _buildGridItem(BuildContext context, String title, String imagePath, Widget page) {
     return InkWell(
       onTap: () {
-        // Handle grid item tap
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -234,4 +164,44 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  Widget _buildListItem(BuildContext context, String title, String imagePath, Widget page) {
+      return InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        },
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                imagePath,
+                width: 50,
+                height: 50,
+              ),
+              SizedBox(width: 10),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 25
+                )
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
 }
