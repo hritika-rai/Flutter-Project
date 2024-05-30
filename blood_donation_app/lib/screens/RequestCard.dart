@@ -9,7 +9,7 @@ class RequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Color.fromARGB(255, 255, 250, 250),
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +36,6 @@ class RequestCard extends StatelessWidget {
                           color: Color.fromARGB(255, 239, 68, 68),
                         ),
                       ),
-                      //SizedBox(height: 5),
                       Text(
                         '${request.numberOfUnits} Unit',
                         style: TextStyle(fontSize: 15, color: Colors.grey[600]),
@@ -81,26 +80,36 @@ class RequestCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.people, color: Colors.grey, size: 20),
+                          Icon(Icons.people, color: Colors.grey[600], size: 20),
                           SizedBox(width: 5),
                           Text(
                             '${request.age}yr old',
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey[600], fontSize: 18),
                           ),
                         ],
                       ),
                       SizedBox(height: 5),
                       Row(
                         children: [
-                          Icon(Icons.location_on, color: Colors.grey, size: 20),
+                          Icon(Icons.location_on, color: Colors.grey[600], size: 20),
                           SizedBox(width: 5),
                           Text(
                             request.location,
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey[600], fontSize: 18),
                           ),
                         ],
                       ),
-                      
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Icon(Icons.phone, color: Colors.grey[600], size: 20),
+                          SizedBox(width: 5),
+                          Text(
+                            request.phoneNumber,
+                            style: TextStyle(color: Colors.grey[600],fontSize: 18),
+                          ),
+                        ],
+                      ),                      
                     ],
                   ),
                   SizedBox(height: 5),

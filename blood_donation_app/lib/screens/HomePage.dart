@@ -2,6 +2,7 @@ import 'package:blood_donation_app/screens/DonatePage.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 
+import 'OtherRequestList.dart';
 import 'ProfilePage.dart';
 import 'RequestPage.dart';
 
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 20), 
                 _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
                 SizedBox(height: 20), 
-                _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', DonatePage()),
+                _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', OtherRequestList()),
               ],
             ),
             SizedBox(height: 20),

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/request_model.dart';
 import '../provider/request_provider.dart';
+import 'OtherRequestCard.dart';
 import 'RequestCard.dart';
 
 class OtherRequestList extends ConsumerStatefulWidget {
@@ -63,7 +64,7 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
                 left: 20,
                 top: 65,
                 child: Text(
-                  'Request',
+                  'Requests',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 34,
@@ -75,7 +76,7 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
                 left: 20,
                 top: 110,
                 child: Text(
-                  'Your request will be displayed to all the donors',
+                  'You can choose to accept the request',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -95,28 +96,11 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
                   final requests = snapshot.data!;
-                  List<Request> filteredRequests = [];
-                  if (_filter == 'All') {
-                    filteredRequests = requests;
-                  } else if (_filter == 'Accepted') {
-                    filteredRequests = requests.where((request) => request.accepted == true).toList();
-                  } else if (_filter == 'Pending') {
-                    filteredRequests = requests.where((request) => request.accepted == false).toList();
-                  }
-                  if (filteredRequests.isEmpty) {
-                    return Center(
-                      child: Text(_filter == 'All'
-                          ? 'No requests found.'
-                          : _filter == 'Accepted'
-                              ? 'No accepted requests found.'
-                              : 'No pending requests found.'),
-                    );
-                  }
                   return ListView.builder(
-                    itemCount: filteredRequests.length,
+                    itemCount: requests.length,
                     itemBuilder: (context, index) {
-                      final request = filteredRequests[index];
-                      return RequestCard(request: request);
+                      final request = requests[index];
+                      return OtherRequestCard(request: request);
                     },
                   );
                 } else {
