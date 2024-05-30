@@ -43,22 +43,24 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                 height: 150,
               ),
               Positioned(
-                left: 16,
+                left: 320,
                 top: 40,
-                child: IconButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 30,
-                  ),
+                  }, 
+                  child: Text(
+                    'Back',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25
+                    ),
+                  ),                  
                 ),
               ),
               Positioned(
                 left: 20,
-                top: 70,
+                top: 65,
                 child: Text(
                   'Request',
                   style: TextStyle(
