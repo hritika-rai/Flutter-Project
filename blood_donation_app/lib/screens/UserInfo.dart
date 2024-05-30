@@ -1,3 +1,4 @@
+import 'package:blood_donation_app/screens/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +50,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
           SnackBar(content: Text('Failed to save user information: $e')),
         );
       }
+
+      Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage()));
+
     }
   }
 

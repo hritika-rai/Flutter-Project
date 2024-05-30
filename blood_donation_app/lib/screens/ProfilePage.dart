@@ -119,6 +119,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                               ),
                             ),
                             Positioned(
+                              right: 15,
+                              top: 85,
+                              child: ElevatedButton(
+                                onPressed: _signOut, 
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white , 
+                                ),
+                                child: Text(
+                                  'Sign Out',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 239, 68, 96),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
                               left: 20,
                               top: 70,
                               child: Text(
@@ -264,4 +281,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     );
   }
+
+  void _signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    // Navigate back to the login page or any other desired page
+    Navigator.popUntil(context, ModalRoute.withName('/'));
+  } catch (e) {
+    print('Error signing out: $e');
+    // Show error message if sign-out fails
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Failed to sign out: $e'),
+    ));
+  }
 }
+
+}
+
