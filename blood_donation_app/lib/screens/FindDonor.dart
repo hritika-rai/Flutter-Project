@@ -6,79 +6,139 @@ class FindDonor extends StatefulWidget {
 }
 
 class _FindDonorState extends State<FindDonor> {
-  final bloodGroupController = TextEditingController();
   final locationController = TextEditingController();
+  String? selectedBloodGroup;
+
+  @override
+  void dispose() {
+    locationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Blood Donor Finder'),
-      ),
-      body: Container(
-        color: Color.fromARGB(255, 239, 68, 96),
-        padding: EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Find Donor',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+            Container(
+              width: double.infinity,
+              height: 500,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/header2.jpg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20.0),
+                ),
               ),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'Blood donors around you',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Choose blood group:',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-              ),
-            ),
-            DropdownButton<String>(
-              items: <String>[
-                'A+',
-                'A-',
-                'B+',
-                'B-',
-                'O+',
-                'O-',
-                'AB+',
-                'AB-'
-              ].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value, style: TextStyle(color: Colors.black)),
-                );
-              }).toList(),
-              onChanged: (value) {},
-              hint: Text('Select Blood Group', style: TextStyle(color: Colors.black)),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Location:',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-              ),
-            ),
-            TextFormField(
-              controller: locationController,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                hintText: 'Enter your location',
-                filled: true,
-                fillColor: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Find Donor',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 34.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Blood donors around you',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      'Choose Blood group',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: selectedBloodGroup,
+                          hint: Text('Select', style: TextStyle(fontSize: 25),),
+                          items: <String>[
+                            'A+',
+                            'A-',
+                            'B+',
+                            'B-',
+                            'O+',
+                            'O-',
+                            'AB+',
+                            'AB-'
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value, style: TextStyle(fontSize: 25),),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedBloodGroup = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: TextField(
+                        controller: locationController,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your location',
+                          border: InputBorder.none,
+                        ), 
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Center(
+                      child: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.search, color: Color.fromARGB(255, 239, 68, 96), size: 25,),
+                        label: Text(
+                          'Search',
+                          style: TextStyle(color: Color.fromARGB(255, 239, 68, 96), fontSize: 25),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          minimumSize: Size(90, 40)
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
