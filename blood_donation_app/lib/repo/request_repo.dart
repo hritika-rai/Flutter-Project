@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/request_model.dart';
 
 class RequestRepository {
@@ -45,5 +44,17 @@ class RequestRepository {
     } catch (e) {
       print('Error updating request: $e');
     }
+  }
+
+  Future<Request?> getRequestById(String requestId) async {
+    try {
+      DocumentSnapshot doc = await _firestore.collection('Requests').doc(requestId).get();
+      if (doc.exists) {
+        return Request.fromMap(doc.data() as Map<String, dynamic>, doc.id, doc['userId']);
+      }
+    } catch (e) {
+      print('Error fetching request by ID: $e');
+    }
+    return null;
   }
 }

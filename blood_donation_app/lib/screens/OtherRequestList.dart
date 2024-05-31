@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/request_model.dart';
 import '../provider/request_provider.dart';
 import 'OtherRequestCard.dart';
-import 'RequestCard.dart';
 
 class OtherRequestList extends ConsumerStatefulWidget {
   const OtherRequestList({Key? key}) : super(key: key);
@@ -17,7 +14,7 @@ class OtherRequestList extends ConsumerStatefulWidget {
 
 class _OtherRequestListState extends ConsumerState<OtherRequestList> {
   late Future<List<Request>> _requestsFuture;
-  String _filter = "All"; // Initially show all requests
+  String _filter = "All"; 
 
   @override
   void initState() {
@@ -95,7 +92,10 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
-                  final requests = snapshot.data!;
+                  final requests = snapshot.data!.where((request) => !request.accepted).toList();
+                  if (requests.isEmpty) {
+                    return Center(child: Text('No unaccepted requests found.'));
+                  }
                   return ListView.builder(
                     itemCount: requests.length,
                     itemBuilder: (context, index) {

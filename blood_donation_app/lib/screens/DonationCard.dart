@@ -1,64 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/DonationRequestConnection_model.dart';
 import '../models/request_model.dart';
-import '../provider/DonationRequestConnection_provider.dart';
-import '../provider/request_provider.dart';
 
-class OtherRequestCard extends ConsumerWidget {
+class DonationCard extends StatelessWidget {
   final Request request;
-  const OtherRequestCard({Key? key, required this.request}) : super(key: key);
-
-  Future<void> handleAcceptRequest(WidgetRef ref, BuildContext context) async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-
-    if (currentUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('You must be logged in to accept requests.')),
-      );
-      return;
-    }
-
-    DonationRequestConnection connection = DonationRequestConnection(
-      connectionId: '',
-      userId: currentUser.uid, 
-      requestId: request.requestId, 
-    );
-
-    try {
-      await ref.read(donationRequestConnectionNotifierProvider.notifier).addConnection(connection);
-
-      await ref.read(requestNotifierProvider.notifier).updateRequest(
-        Request(
-          userId: request.userId,
-          requestId: request.requestId,
-          name: request.name,
-          bloodGroup: request.bloodGroup,
-          numberOfUnits: request.numberOfUnits,
-          date: request.date,
-          gender: request.gender,
-          hospitalName: request.hospitalName,
-          location: request.location,
-          phoneNumber: request.phoneNumber,
-          age: request.age,
-          accepted: true,
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Request accepted successfully.')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to accept request: $e')),
-      );
-    }
-  }
+  const DonationCard({Key? key, required this.request}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Card(
       color: Color.fromARGB(255, 255, 250, 250),
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -175,27 +124,6 @@ class OtherRequestCard extends ConsumerWidget {
                   ),
                 ),
               ],
-            ),
-            Divider(), 
-            SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => handleAcceptRequest(ref, context),
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 239, 68, 96),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Accept Request",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
             ),
           ],
         ),

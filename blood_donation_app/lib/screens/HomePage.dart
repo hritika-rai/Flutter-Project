@@ -1,4 +1,5 @@
 import 'package:blood_donation_app/screens/DonatePage.dart';
+import 'package:blood_donation_app/screens/DonationHistory.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 //_buildGridItem(context, 'Blood banks', 'assets/images/bloodbank.png', HomePage()),
                 //_buildGridItem(context, 'Hospital', 'assets/images/Hospital.png',HomePage()),
-                _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',HomePage()),
+                _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',DonationHistory()),
                 _buildGridItem(context, 'Your Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
               ],
             ),
