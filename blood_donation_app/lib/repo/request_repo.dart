@@ -26,7 +26,7 @@ class RequestRepository {
     }
   }
 
-   Future<List<Request>> getOtherRequests(String userId) async {
+  Future<List<Request>> getOtherRequests(String userId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('Requests')
           .where('userId', isNotEqualTo: userId)
@@ -38,11 +38,13 @@ class RequestRepository {
     }
   }
 
-  Future<void> updateRequest(Request request) async {
+  Future<List<Request>> getAllRequests() async {
     try {
-      await _firestore.collection('Requests').doc(request.requestId).update(request.toMap());
+      QuerySnapshot querySnapshot = await _firestore.collection('Requests').get();
+      return querySnapshot.docs.map((doc) => Request.fromMap(doc.data() as Map<String, dynamic>, doc.id, doc['userId'])).toList();
     } catch (e) {
-      print('Error updating request: $e');
+      print('Error fetching all requests: $e');
+      return [];
     }
   }
 
@@ -57,4 +59,13 @@ class RequestRepository {
     }
     return null;
   }
+
+  Future<void> updateRequest(Request request) async {
+    try {
+      await _firestore.collection('Requests').doc(request.requestId).update(request.toMap());
+    } catch (e) {
+      print('Error updating request: $e');
+    }
+  }
+
 }

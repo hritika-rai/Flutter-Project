@@ -1,35 +1,20 @@
-import 'package:blood_donation_app/models/DonationRequestConnection_model.dart';
-import 'package:blood_donation_app/provider/DonationRequestConnection_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/request_model.dart';
+import '../models/DonationRequestConnection_model.dart';
+import '../repo/request_repo.dart';
+import '../repo/DonationRequestConnection_repo.dart';
 import '../provider/request_provider.dart';
+import '../provider/DonationRequestConnection_provider.dart';
 import 'DonationCard.dart';
 
-class DonationHistory extends ConsumerStatefulWidget {
-  const DonationHistory({Key? key}) : super(key: key);
-
+class DonationHistory extends ConsumerWidget {
   @override
-  _DonationHistoryState createState() => _DonationHistoryState();
-}
-
-class _DonationHistoryState extends ConsumerState<DonationHistory> {
-  late Future<List<DonationRequestConnection>> _connectionsFuture;
-
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      _connectionsFuture = ref.read(donationRequestConnectionNotifierProvider.notifier).loadConnections(currentUser.uid);
-    } else {
-      _connectionsFuture = Future.value([]);
-    }
-  }
+    final userId = currentUser!.uid; 
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -65,7 +50,7 @@ class _DonationHistoryState extends ConsumerState<DonationHistory> {
                   'Donation History',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 34,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -74,7 +59,7 @@ class _DonationHistoryState extends ConsumerState<DonationHistory> {
                 left: 20,
                 top: 110,
                 child: Text(
-                  'View Your Donation History',
+                  'Your history',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -83,68 +68,48 @@ class _DonationHistoryState extends ConsumerState<DonationHistory> {
               ),
             ],
           ),
-          SizedBox(height: 10,),
           Expanded(
-            child: FutureBuilder<List<DonationRequestConnection>>(
-              future: _connectionsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  final connections = snapshot.data!;
-                  if (connections.isEmpty) {
-                    return Center(child: Text('No donation history found.'));
-                  }
-
-                  return FutureBuilder<List<Request>>(
-                    future: _getFilteredRequests(connections),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (snapshot.hasData) {
-                        final requests = snapshot.data!;
-                        if (requests.isEmpty) {
-                          return Center(child: Text('No donation history found.'));
-                        }
-                        requests.sort((a, b) => a.date.compareTo(b.date));
-                        return ListView.builder(
-                          itemCount: requests.length,
-                          itemBuilder: (context, index) {
-                            final request = requests[index];
-                            return DonationCard(request: request);
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: Text('No donation history found.'),
-                        );
-                      }
-                    },
-                  );
-                } else {
-                  return Center(
-                    child: Text('No donation history found.'),
-                  );
-                }
+            child: FutureBuilder<List<Request>>(
+        future: _loadAcceptedRequests(ref, userId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No donation history found.'));
+          } else {
+            final requests = snapshot.data!;
+            return ListView.builder(
+              itemCount: requests.length,
+              itemBuilder: (context, index) {
+                final request = requests[index];
+                return DonationCard(request: request);
               },
-            ),
-          ),
-        ],
+            );
+          }
+        },
       ),
+    ),
+        ]
+  ),
     );
   }
 
-  Future<List<Request>> _getFilteredRequests(List<DonationRequestConnection> connections) async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      final List<String> requestIds = connections.map((connection) => connection.requestId).toList();
-      final List<Request> requests = await ref.read(requestNotifierProvider.notifier).loadRequests(currentUser.uid);
-      return requests.where((request) => requestIds.contains(request.requestId)).toList();
-    }
-    return [];
+  Future<List<Request>> _loadAcceptedRequests(WidgetRef ref, String userId) async {
+    final connectionRepo = ref.read(donationRequestConnectionRepositoryProvider);
+    final requestRepo = ref.read(requestRepositoryProvider);
+
+    // Fetch connections
+    List<DonationRequestConnection> connections = await connectionRepo.getConnections(userId);
+
+    // Fetch requests based on connections
+    List<Future<Request?>> requestFutures = connections.map((connection) {
+      return requestRepo.getRequestById(connection.requestId);
+    }).toList();
+
+    // Await all futures and filter out nulls
+    List<Request?> requestList = await Future.wait(requestFutures);
+    return requestList.whereType<Request>().toList();
   }
 }

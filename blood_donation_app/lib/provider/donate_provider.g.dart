@@ -26,7 +26,7 @@ String _$donateNotifierHash() => r'ff11f8eb28bbe7445898fd4de2811cdb0333779c';
 /// See also [DonateNotifier].
 @ProviderFor(DonateNotifier)
 final donateNotifierProvider =
-    AutoDisposeNotifierProvider<DonateNotifier, AsyncValue<Donate?>>.internal(
+    AutoDisposeNotifierProvider<DonateNotifier, AsyncValue<Donor?>>.internal(
   DonateNotifier.new,
   name: r'donateNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -36,6 +36,6 @@ final donateNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$DonateNotifier = AutoDisposeNotifier<AsyncValue<Donate?>>;
+typedef _$DonateNotifier = AutoDisposeNotifier<AsyncValue<Donor?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

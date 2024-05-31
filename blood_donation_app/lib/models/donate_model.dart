@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Donate {
+class Donor {
   final String userId;
   final String donateId;
   final String name;
@@ -11,7 +11,7 @@ class Donate {
   final String phoneNumber;
   final String age;
 
-  Donate({
+  Donor({
     required this.userId,
     required this.donateId,
     required this.name,
@@ -23,7 +23,7 @@ class Donate {
     required this.age,
   });
 
-  factory Donate.fromMap(Map<String, dynamic> data, String donateId, String userId) {
+  factory Donor.fromMap(Map<String, dynamic> data, String donateId, String userId) {
     DateTime parsedDate;
     try {
       parsedDate = DateTime.parse(data['date']);
@@ -31,7 +31,7 @@ class Donate {
       print('Error parsing date: $e');
       parsedDate = DateTime.now();
     }
-    return Donate(
+    return Donor(
       userId: userId,
       donateId: donateId,
       name: data['name'] ?? 'Unknown',

@@ -28,8 +28,6 @@ class _DonatePageState extends ConsumerState<DonatePage> {
   final List<String> _bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   final List<String> _genders = ['Male', 'Female', 'Other'];
 
-  // final isLoading = ref.watch(loadingProvider).state;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +74,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                 left: 20,
                 top: 110,
                 child: Text(
-                  'Your request will be displayed to all the reciepts',
+                  'Your request will be displayed to all the recipients',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 17,
@@ -136,7 +134,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                         style: TextStyle(fontSize: 25),
                       ),
                       DropdownButtonFormField<String>(
-                        value: _bloodGroups.first,
+                        value: _bloodGroupController.text.isNotEmpty ? _bloodGroupController.text : null,
                         items: _bloodGroups.map((String group) {
                           return DropdownMenuItem<String>(
                             value: group,
@@ -183,7 +181,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                         style: TextStyle(fontSize: 25),
                       ),
                       DropdownButtonFormField<String>(
-                        value: _genders.first,
+                        value: _genderController.text.isNotEmpty ? _genderController.text : null,
                         items: _genders.map((String gender) {
                           return DropdownMenuItem<String>(
                             value: gender,
@@ -252,14 +250,14 @@ class _DonatePageState extends ConsumerState<DonatePage> {
                         child: ElevatedButton(
                           onPressed: _submitForm,
                           style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 239, 68, 96), 
-                          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                          minimumSize: Size(300, 40),
-                        ),
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                            backgroundColor: Color.fromARGB(255, 239, 68, 96), 
+                            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                            minimumSize: Size(300, 40),
+                          ),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
@@ -278,7 +276,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         final donateId = Uuid().v4();
-        final donate = Donate(
+        final donor = Donor(
           userId: currentUser.uid,
           donateId: donateId,
           name: _nameController.text,
@@ -289,7 +287,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
           location: _locationController.text,
           phoneNumber: _phoneNumberController.text,
         );
-        ref.read(donateNotifierProvider.notifier).addDonate(donate);
+        ref.read(donateNotifierProvider.notifier).addDonate(donor);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -299,6 +297,7 @@ class _DonatePageState extends ConsumerState<DonatePage> {
 
         _formKey.currentState?.reset();
         _nameController.clear();
+        _ageController.clear();
         _bloodGroupController.clear();
         _numberOfUnitsController.clear();
         _genderController.clear();
@@ -308,5 +307,4 @@ class _DonatePageState extends ConsumerState<DonatePage> {
     }
   }
 }
-
 

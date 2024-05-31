@@ -15,36 +15,36 @@ class DonateNotifier extends _$DonateNotifier {
   late final DonateRepository repository;
 
   @override
-  AsyncValue<Donate?> build() {
+  AsyncValue<Donor?> build() {
     repository = ref.watch(donateRepositoryProvider);
-    return const AsyncValue<Donate?>.data(null);
+    return const AsyncValue<Donor?>.data(null);
   }
 
-  Future<List<Donate>> loadDonates(String userId) async {
+  Future<List<Donor>> loadDonates(String userId) async {
     try {
-      final donates = await repository.getDonates(userId);
-      return donates;
+      final donors = await repository.getDonates(userId);
+      return donors;
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
       return [];
     }
   }
 
-  Future<void> addDonate(Donate donate) async {
+  Future<void> addDonate(Donor donor) async {
     state = const AsyncValue.loading();
     try {
-      await repository.addDonate(donate);
-      state = AsyncValue.data(donate);
+      await repository.addDonate(donor);
+      state = AsyncValue.data(donor);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
-  Future<void> updateDonate(Donate donate) async {
+  Future<void> updateDonate(Donor donor) async {
     state = const AsyncValue.loading();
     try {
-      await repository.updateDonate(donate);
-      state = AsyncValue.data(donate);
+      await repository.updateDonate(donor);
+      state = AsyncValue.data(donor);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }

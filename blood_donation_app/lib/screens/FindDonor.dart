@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'HomePage.dart';
+import 'ProfilePage.dart';
+
 class FindDonor extends StatefulWidget {
   @override
   _FindDonorState createState() => _FindDonorState();
@@ -144,6 +147,38 @@ class _FindDonorState extends State<FindDonor> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+              },
+              child: Icon(Icons.home),
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
+              },
+              child: Icon(Icons.search,color: Colors.red),
+            ),
+            label: 'Find Donor',
+          ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+              },
+              child: Icon(Icons.person),
+            ),
+            label: 'Profile',
+          ),
+        ],
+      ),
+
     );
   }
 }

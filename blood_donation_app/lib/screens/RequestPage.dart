@@ -30,8 +30,6 @@ class _RequestPageState extends ConsumerState<RequestPage> {
   final List<String> _bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   final List<String> _genders = ['Male', 'Female', 'Other'];
 
-  // final isLoading = ref.watch(loadingProvider).state;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +136,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                         style: TextStyle(fontSize: 25),
                       ),
                       DropdownButtonFormField<String>(
-                        value: _bloodGroups.first,
+                        value: _bloodGroupController.text.isNotEmpty ? _bloodGroupController.text : null,
                         items: _bloodGroups.map((String group) {
                           return DropdownMenuItem<String>(
                             value: group,
@@ -220,7 +218,7 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                         style: TextStyle(fontSize: 25),
                       ),
                       DropdownButtonFormField<String>(
-                        value: _genders.first,
+                        value: _genderController.text.isNotEmpty ? _genderController.text : null,
                         items: _genders.map((String gender) {
                           return DropdownMenuItem<String>(
                             value: gender,
@@ -368,5 +366,4 @@ class _RequestPageState extends ConsumerState<RequestPage> {
     }
   }
 }
-
 
