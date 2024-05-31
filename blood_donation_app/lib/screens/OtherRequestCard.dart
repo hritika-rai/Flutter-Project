@@ -6,10 +6,14 @@ import '../models/DonationRequestConnection_model.dart';
 import '../models/request_model.dart';
 import '../provider/DonationRequestConnection_provider.dart';
 import '../provider/request_provider.dart';
+import 'OtherRequestList.dart';
 
 class OtherRequestCard extends ConsumerWidget {
   final Request request;
-  const OtherRequestCard({Key? key, required this.request}) : super(key: key);
+  final VoidCallback reloadRequests; 
+  const OtherRequestCard({Key? key, required this.request, required this.reloadRequests}) : super(key: key);
+
+  // const OtherRequestCard({Key? key, required this.request}) : super(key: key);
 
   Future<void> handleAcceptRequest(WidgetRef ref, BuildContext context) async {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -20,7 +24,7 @@ class OtherRequestCard extends ConsumerWidget {
       );
       return;
     }
-
+    
     DonationRequestConnection connection = DonationRequestConnection(
       connectionId: '',
       userId: currentUser.uid, 
@@ -50,6 +54,8 @@ class OtherRequestCard extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request accepted successfully.')),
       );
+
+      reloadRequests();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to accept request: $e')),
@@ -59,6 +65,7 @@ class OtherRequestCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(request.userId);
     return Card(
       color: Color.fromARGB(255, 255, 250, 250),
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -202,4 +209,5 @@ class OtherRequestCard extends ConsumerWidget {
       ),
     );
   }
+  
 }

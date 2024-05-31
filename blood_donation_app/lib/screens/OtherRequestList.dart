@@ -100,7 +100,11 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
                     itemCount: requests.length,
                     itemBuilder: (context, index) {
                       final request = requests[index];
-                      return OtherRequestCard(request: request);
+                      print(request.userId);
+                      return OtherRequestCard(
+                        request: request,
+                        reloadRequests: reloadRequests, 
+                      );
                     },
                   );
                 } else {
@@ -115,5 +119,15 @@ class _OtherRequestListState extends ConsumerState<OtherRequestList> {
       ),
     );
   }
+  void reloadRequests() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      setState(() {
+        _requestsFuture = ref.read(requestNotifierProvider.notifier).loadOtherRequests(currentUser.uid);
+      });
+    }
+  }
 }
+
+
 

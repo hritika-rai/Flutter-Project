@@ -20,9 +20,9 @@ class DonationRequestConnectionNotifier extends _$DonationRequestConnectionNotif
     return const AsyncValue<DonationRequestConnection?>.data(null);
   }
 
-  Future<List<DonationRequestConnection>> loadConnections() async {
+  Future<List<DonationRequestConnection>> loadConnections(String userId) async {
     try {
-      final connections = await repository.getConnections();
+      final connections = await repository.getConnections(userId);
       return connections;
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);

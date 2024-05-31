@@ -38,7 +38,7 @@ class Request {
       parsedDate = DateTime.now(); 
     }
     return Request(
-      userId: userId,
+      userId: data['userId'],
       requestId: requestId,
       name: data['name'] ?? 'Unknown',
       bloodGroup: data['bloodGroup'] ?? 'Unknown',

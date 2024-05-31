@@ -1,3 +1,5 @@
+import 'package:blood_donation_app/models/DonationRequestConnection_model.dart';
+import 'package:blood_donation_app/provider/DonationRequestConnection_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,14 +15,16 @@ class DonationHistory extends ConsumerStatefulWidget {
 }
 
 class _DonationHistoryState extends ConsumerState<DonationHistory> {
-  late Future<List<Request>> _requestsFuture;
+  late Future<List<DonationRequestConnection>> _connectionsFuture;
 
   @override
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      _requestsFuture = ref.read(requestNotifierProvider.notifier).loadRequests(currentUser.uid);
+      _connectionsFuture = ref.read(donationRequestConnectionNotifierProvider.notifier).loadConnections(currentUser.uid);
+    } else {
+      _connectionsFuture = Future.value([]);
     }
   }
 
@@ -81,24 +85,44 @@ class _DonationHistoryState extends ConsumerState<DonationHistory> {
           ),
           SizedBox(height: 10,),
           Expanded(
-            child: FutureBuilder<List<Request>>(
-              future: _requestsFuture,
+            child: FutureBuilder<List<DonationRequestConnection>>(
+              future: _connectionsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
-                  final requests = snapshot.data!;
-                  if (requests.isEmpty) {
+                  final connections = snapshot.data!;
+                  if (connections.isEmpty) {
                     return Center(child: Text('No donation history found.'));
                   }
-                  requests.sort((a, b) => a.date.compareTo(b.date));
-                  return ListView.builder(
-                    itemCount: requests.length,
-                    itemBuilder: (context, index) {
-                      final request = requests[index];
-                      return DonationCard(request: request);
+
+                  return FutureBuilder<List<Request>>(
+                    future: _getFilteredRequests(connections),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (snapshot.hasData) {
+                        final requests = snapshot.data!;
+                        if (requests.isEmpty) {
+                          return Center(child: Text('No donation history found.'));
+                        }
+                        requests.sort((a, b) => a.date.compareTo(b.date));
+                        return ListView.builder(
+                          itemCount: requests.length,
+                          itemBuilder: (context, index) {
+                            final request = requests[index];
+                            return DonationCard(request: request);
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: Text('No donation history found.'),
+                        );
+                      }
                     },
                   );
                 } else {
@@ -112,5 +136,15 @@ class _DonationHistoryState extends ConsumerState<DonationHistory> {
         ],
       ),
     );
+  }
+
+  Future<List<Request>> _getFilteredRequests(List<DonationRequestConnection> connections) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final List<String> requestIds = connections.map((connection) => connection.requestId).toList();
+      final List<Request> requests = await ref.read(requestNotifierProvider.notifier).loadRequests(currentUser.uid);
+      return requests.where((request) => requestIds.contains(request.requestId)).toList();
+    }
+    return [];
   }
 }

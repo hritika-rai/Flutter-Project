@@ -19,9 +19,11 @@ class DonationRequestConnectionRepository {
     }
   }
 
-  Future<List<DonationRequestConnection>> getConnections() async {
+  Future<List<DonationRequestConnection>> getConnections(String userId) async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('DonationRequestConnections').get();
+      QuerySnapshot querySnapshot = await _firestore.collection('DonationRequestConnections')
+          .where('userId', isEqualTo: userId)
+          .get();
       return querySnapshot.docs.map((doc) => DonationRequestConnection.fromMap(doc.data() as Map<String, dynamic>, doc.id)).toList();
     } catch (e) {
       print('Error fetching connections: $e');
