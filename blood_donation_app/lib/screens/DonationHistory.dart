@@ -7,7 +7,7 @@ import '../repo/request_repo.dart';
 import '../repo/DonationRequestConnection_repo.dart';
 import '../provider/request_provider.dart';
 import '../provider/DonationRequestConnection_provider.dart';
-import 'DonationCard.dart';
+import '../widgets/DonationCard.dart';
 
 class DonationHistory extends ConsumerWidget {
   @override

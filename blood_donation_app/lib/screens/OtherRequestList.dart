@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/request_model.dart';
 import '../provider/request_provider.dart';
-import 'OtherRequestCard.dart';
+import '../widgets/OtherRequestCard.dart';
 
 class OtherRequestList extends ConsumerStatefulWidget {
   const OtherRequestList({Key? key}) : super(key: key);

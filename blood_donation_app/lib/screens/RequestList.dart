@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/request_model.dart';
 import '../provider/request_provider.dart';
-import 'RequestCard.dart';
+import '../widgets/RequestCard.dart';
 
 class RequestList extends ConsumerStatefulWidget {
   const RequestList({Key? key}) : super(key: key);

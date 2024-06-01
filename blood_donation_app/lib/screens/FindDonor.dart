@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/donor_model.dart';
 import '../provider/donor_provider.dart';
-import 'DonorCard.dart';
+import '../widgets/DonorCard.dart';
 import 'HomePage.dart';
 import 'ProfilePage.dart';
 

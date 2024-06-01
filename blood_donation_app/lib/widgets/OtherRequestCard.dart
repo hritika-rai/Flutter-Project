@@ -6,7 +6,7 @@ import '../models/DonationRequestConnection_model.dart';
 import '../models/request_model.dart';
 import '../provider/DonationRequestConnection_provider.dart';
 import '../provider/request_provider.dart';
-import 'OtherRequestList.dart';
+import '../screens/OtherRequestList.dart';
 
 class OtherRequestCard extends ConsumerWidget {
   final Request request;
