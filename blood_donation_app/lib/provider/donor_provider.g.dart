@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'donate_provider.dart';
+part of 'donor_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -21,7 +21,7 @@ final donateRepositoryProvider = AutoDisposeProvider<DonateRepository>.internal(
 );
 
 typedef DonateRepositoryRef = AutoDisposeProviderRef<DonateRepository>;
-String _$donateNotifierHash() => r'ff11f8eb28bbe7445898fd4de2811cdb0333779c';
+String _$donateNotifierHash() => r'2dfae554aff4528abafb925e455956394f2e0e7f';
 
 /// See also [DonateNotifier].
 @ProviderFor(DonateNotifier)

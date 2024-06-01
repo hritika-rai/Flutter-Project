@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/donate_model.dart';
-import '../repo/donate_repo.dart';
+import '../models/donor_model.dart';
+import '../repo/donor_repo.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'donate_provider.g.dart';
+part 'donor_provider.g.dart';
 
 @riverpod
 DonateRepository donateRepository(DonateRepositoryRef ref) {
@@ -37,6 +37,16 @@ class DonateNotifier extends _$DonateNotifier {
       state = AsyncValue.data(donor);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<List<Donor>> loadDonorsByBloodGroupAndLocation(String userId, String bloodGroup, String location) async {
+    try {
+      final donors = await repository.getDonorsByBloodGroupAndLocation(userId, bloodGroup, location);
+      return donors;
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+      return [];
     }
   }
 

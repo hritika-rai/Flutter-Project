@@ -25,7 +25,7 @@ final donationRequestConnectionRepositoryProvider =
 typedef DonationRequestConnectionRepositoryRef
     = AutoDisposeProviderRef<DonationRequestConnectionRepository>;
 String _$donationRequestConnectionNotifierHash() =>
-    r'5ec3980813a21d906e995ae941c776442fa2d4b8';
+    r'7992bdf8f5e4efe1e009cec639ae9de2dcb8878c';
 
 /// See also [DonationRequestConnectionNotifier].
 @ProviderFor(DonationRequestConnectionNotifier)

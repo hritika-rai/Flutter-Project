@@ -1,184 +1,141 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/donor_model.dart';
+import '../provider/donor_provider.dart';
+import 'DonorCard.dart'; 
 
-import 'HomePage.dart';
-import 'ProfilePage.dart';
-
-class FindDonor extends StatefulWidget {
+class FindDonor extends ConsumerStatefulWidget {
   @override
-  _FindDonorState createState() => _FindDonorState();
+  _FindDonorPageState createState() => _FindDonorPageState();
 }
 
-class _FindDonorState extends State<FindDonor> {
-  final locationController = TextEditingController();
-  String? selectedBloodGroup;
+class _FindDonorPageState extends ConsumerState<FindDonor> {
+  String? _bloodGroup;
+  String? _location;
+  List<Donor>? _donors;
+  bool _isLoading = false;
 
-  @override
-  void dispose() {
-    locationController.dispose();
-    super.dispose();
+  final List<String> _bloodGroups = [
+    'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
+  ];
+
+  final List<String> _locations = [
+    'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Peshawar', 
+    'Quetta', 'Multan', 'Faisalabad', 'Sialkot', 'Hyderabad'
+  ];
+
+  final _formKey = GlobalKey<FormState>();
+
+  void _findDonors() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final donors = await ref
+            .read(donateNotifierProvider.notifier)
+            .loadDonorsByBloodGroupAndLocation('currentUserId', _bloodGroup!, _location!);
+        setState(() {
+          _donors = donors;
+        });
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $error')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 500,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/header2.jpg'),
-                  fit: BoxFit.cover,
+      appBar: AppBar(
+        title: Text('Find Donor'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButtonFormField<String>(
+                value: _bloodGroup,
+                decoration: InputDecoration(
+                  labelText: 'Select Blood Group',
+                  border: OutlineInputBorder(),
                 ),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20.0),
-                ),
+                items: _bloodGroups.map((String bloodGroup) {
+                  return DropdownMenuItem<String>(
+                    value: bloodGroup,
+                    child: Text(bloodGroup),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _bloodGroup = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a blood group';
+                  }
+                  return null;
+                },
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Find Donor',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 34.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      'Blood donors around you',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Text(
-                      'Choose Blood group',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedBloodGroup,
-                          hint: Text('Select', style: TextStyle(fontSize: 25),),
-                          items: <String>[
-                            'A+',
-                            'A-',
-                            'B+',
-                            'B-',
-                            'O+',
-                            'O-',
-                            'AB+',
-                            'AB-'
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value, style: TextStyle(fontSize: 25),),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedBloodGroup = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Location',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      child: TextField(
-                        controller: locationController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your location',
-                          border: InputBorder.none,
-                        ), 
-                        style: TextStyle(fontSize: 25),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Center(
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(Icons.search, color: Color.fromARGB(255, 239, 68, 96), size: 25,),
-                        label: Text(
-                          'Search',
-                          style: TextStyle(color: Color.fromARGB(255, 239, 68, 96), fontSize: 25),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          minimumSize: Size(90, 40)
-                        ),
-                      ),
-                    ),
-                  ],
+              SizedBox(height: 16.0),
+              DropdownButtonFormField<String>(
+                value: _location,
+                decoration: InputDecoration(
+                  labelText: 'Select Location',
+                  border: OutlineInputBorder(),
                 ),
+                items: _locations.map((String location) {
+                  return DropdownMenuItem<String>(
+                    value: location,
+                    child: Text(location),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _location = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a location';
+                  }
+                  return null;
+                },
               ),
-            ),
-          ],
+              SizedBox(height: 16.0),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ElevatedButton(
+                      onPressed: _findDonors,
+                      child: Text('Search Donors'),
+                    ),
+              SizedBox(height: 16.0),
+              _donors == null
+                  ? Text('No donors found')
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: _donors!.length,
+                        itemBuilder: (context, index) {
+                          final donor = _donors![index];
+                          return DonorCard(donor: donor);
+                        },
+                      ),
+                    ),
+            ],
+          ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-              },
-              child: Icon(Icons.home),
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
-              },
-              child: Icon(Icons.search,color: Colors.red),
-            ),
-            label: 'Find Donor',
-          ),
-          BottomNavigationBarItem(
-            icon: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-              },
-              child: Icon(Icons.person),
-            ),
-            label: 'Profile',
-          ),
-        ],
-      ),
-
     );
   }
 }

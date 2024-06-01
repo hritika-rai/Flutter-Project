@@ -32,7 +32,7 @@ class Donor {
       parsedDate = DateTime.now();
     }
     return Donor(
-      userId: userId,
+      userId: data['userId'],
       donateId: donateId,
       name: data['name'] ?? 'Unknown',
       bloodGroup: data['bloodGroup'] ?? 'Unknown',

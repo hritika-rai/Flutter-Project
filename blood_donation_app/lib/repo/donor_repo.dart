@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/donate_model.dart';
+import '../models/donor_model.dart';
 
 class DonateRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -25,6 +25,21 @@ class DonateRepository {
       return [];
     }
   }
+
+  Future<List<Donor>> getDonorsByBloodGroupAndLocation(String userId, String bloodGroup, String location) async {
+  try {
+    QuerySnapshot querySnapshot = await _firestore.collection('Donars')
+        .where('bloodGroup', isEqualTo: bloodGroup)
+        .where('location', isEqualTo: location)
+        .where('userId', isNotEqualTo: userId)
+        .get();
+    return querySnapshot.docs.map((doc) => Donor.fromMap(doc.data() as Map<String, dynamic>, doc.id, userId)).toList();
+  } catch (e) {
+    print('Error fetching donors by blood group and location: $e');
+    return [];
+  }
+}
+
 
   Future<void> updateDonate(Donor donor) async {
     try {
