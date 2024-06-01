@@ -1,5 +1,6 @@
 import 'package:blood_donation_app/screens/DonatePage.dart';
 import 'package:blood_donation_app/screens/DonationHistory.dart';
+import 'package:blood_donation_app/screens/FindDonor2.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 import 'FindDonor.dart';
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor2()));
               },
               child: Icon(Icons.search),
             ),

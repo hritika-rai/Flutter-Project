@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/user_model.dart';
 import '../provider/user_provider.dart';
+import 'FindDonor.dart';
 import 'HomePage.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -261,7 +262,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () {
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonorPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
               },
               child: Icon(Icons.search),
             ),
