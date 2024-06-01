@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor2()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
               },
               child: Icon(Icons.search),
             ),
