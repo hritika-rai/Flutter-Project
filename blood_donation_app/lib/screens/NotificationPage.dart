@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';  // Add this import for date formatting
-import 'package:timeago/timeago.dart' as timeago;  // Add this import for timeago
+import 'package:intl/intl.dart';  
+import 'package:timeago/timeago.dart' as timeago;  
 import '../models/notification_model.dart';
 import '../provider/notification_provider.dart';
 
@@ -179,6 +179,7 @@ class _NotificationPageState extends ConsumerState<NotificationPage> {
                                       textAlign: TextAlign.justify,
                                     ),
                                   ),
+                                  SizedBox(height: 15,),
                                 ],
                               ),
                             ),
