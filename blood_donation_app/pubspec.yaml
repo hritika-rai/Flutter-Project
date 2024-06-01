@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^4.17.5
   uuid: ^4.4.0
   intl: ^0.19.0
+  timeago: ^3.6.1
 
 dev_dependencies:
   flutter_test:

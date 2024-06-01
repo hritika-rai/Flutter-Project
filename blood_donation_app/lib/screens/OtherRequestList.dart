@@ -14,7 +14,6 @@ class OtherRequestList extends ConsumerStatefulWidget {
 
 class _OtherRequestListState extends ConsumerState<OtherRequestList> {
   late Future<List<Request>> _requestsFuture;
-  String _filter = "All"; 
 
   @override
   void initState() {

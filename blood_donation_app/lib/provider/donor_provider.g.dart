@@ -21,7 +21,7 @@ final donateRepositoryProvider = AutoDisposeProvider<DonateRepository>.internal(
 );
 
 typedef DonateRepositoryRef = AutoDisposeProviderRef<DonateRepository>;
-String _$donateNotifierHash() => r'2dfae554aff4528abafb925e455956394f2e0e7f';
+String _$donateNotifierHash() => r'06bc375a0be0096997df0f7723b5738c027d0f3c';
 
 /// See also [DonateNotifier].
 @ProviderFor(DonateNotifier)

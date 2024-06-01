@@ -2,18 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import '../models/DonationRequestConnection_model.dart';
 import '../models/request_model.dart';
+import '../models/notification_model.dart';
 import '../provider/DonationRequestConnection_provider.dart';
+import '../provider/notification_provider.dart';
 import '../provider/request_provider.dart';
+import '../provider/user_provider.dart';
 import '../screens/OtherRequestList.dart';
 
 class OtherRequestCard extends ConsumerWidget {
   final Request request;
   final VoidCallback reloadRequests; 
-  const OtherRequestCard({Key? key, required this.request, required this.reloadRequests}) : super(key: key);
-
-  // const OtherRequestCard({Key? key, required this.request}) : super(key: key);
+  OtherRequestCard({Key? key, required this.request, required this.reloadRequests}) : super(key: key);
+  
 
   Future<void> handleAcceptRequest(WidgetRef ref, BuildContext context) async {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -27,11 +30,13 @@ class OtherRequestCard extends ConsumerWidget {
     
     DonationRequestConnection connection = DonationRequestConnection(
       connectionId: '',
-      userId: currentUser.uid, 
+      userId: currentUser!.uid, 
       requestId: request.requestId, 
     );
 
     try {
+      final user = await ref.read(userNotifierProvider.notifier).loadUser(currentUser.uid);
+
       await ref.read(donationRequestConnectionNotifierProvider.notifier).addConnection(connection);
 
       await ref.read(requestNotifierProvider.notifier).updateRequest(
@@ -50,6 +55,17 @@ class OtherRequestCard extends ConsumerWidget {
           accepted: true,
         ),
       );
+              
+      final notificationId = Uuid().v4();
+
+      Notifications notification = Notifications(
+        notificationId: notificationId, 
+        userId: request.userId,
+        body: 'Your blood donation request has been accepted by ${user?.name}. You can contact at ${user?.contactNumber}',
+        timestamp: DateTime.now(),
+      );
+
+      await ref.read(notificationNotifierProvider.notifier).addNotification(request.userId, notification);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request accepted successfully.')),

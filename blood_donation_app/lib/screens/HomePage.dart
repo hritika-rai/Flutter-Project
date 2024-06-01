@@ -34,13 +34,13 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.notifications), 
             onPressed: () {
-              MaterialPageRoute(builder: (context) => NotificationsPage());
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
             },
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16,0,16,16),
         child: Column(
           children: [
             
