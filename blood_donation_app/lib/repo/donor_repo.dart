@@ -29,9 +29,9 @@ class DonateRepository {
   Future<List<Donor>> getDonorsByBloodGroupAndLocation(String userId, String bloodGroup, String location) async {
   try {
     QuerySnapshot querySnapshot = await _firestore.collection('Donars')
+        .where('userId', isNotEqualTo: userId)
         .where('bloodGroup', isEqualTo: bloodGroup)
         .where('location', isEqualTo: location)
-        .where('userId', isNotEqualTo: userId)
         .get();
     return querySnapshot.docs.map((doc) => Donor.fromMap(doc.data() as Map<String, dynamic>, doc.id, userId)).toList();
   } catch (e) {

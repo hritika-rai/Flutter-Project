@@ -4,6 +4,7 @@ import 'package:blood_donation_app/screens/FindDonor2.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
 import 'FindDonor.dart';
+import 'NotificationPage.dart';
 import 'OtherRequestList.dart';
 import 'ProfilePage.dart';
 import 'RequestPage.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.notifications), 
             onPressed: () {
-              // Add action for notification icon if needed
+              MaterialPageRoute(builder: (context) => NotificationsPage());
             },
           ),
         ],

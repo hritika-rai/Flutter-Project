@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/donor_model.dart';
@@ -35,9 +36,10 @@ class _FindDonorPageState extends ConsumerState<FindDonor> {
       });
 
       try {
+        final currentUser = FirebaseAuth.instance.currentUser;
         final donors = await ref
             .read(donateNotifierProvider.notifier)
-            .loadDonorsByBloodGroupAndLocation('currentUserId', _bloodGroup!, _location!);
+            .loadDonorsByBloodGroupAndLocation(currentUser!.uid, _bloodGroup!, _location!);
         _donors = donors;
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
