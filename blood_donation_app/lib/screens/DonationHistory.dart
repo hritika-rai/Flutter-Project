@@ -100,10 +100,8 @@ class DonationHistory extends ConsumerWidget {
     final connectionRepo = ref.read(donationRequestConnectionRepositoryProvider);
     final requestRepo = ref.read(requestRepositoryProvider);
 
-    // Fetch connections
     List<DonationRequestConnection> connections = await connectionRepo.getConnections(userId);
 
-    // Fetch requests based on connections
     List<Future<Request?>> requestFutures = connections.map((connection) {
       return requestRepo.getRequestById(connection.requestId);
     }).toList();

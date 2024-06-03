@@ -125,9 +125,7 @@ class RequestCard extends StatelessWidget {
                 request.accepted == null || request.accepted == false ? Icons.cancel : Icons.check_circle,
                 color: request.accepted == null || request.accepted == false ? Colors.red : Colors.green,
               ),
-              onPressed: () {
-                // Add functionality here if needed
-              },
+              onPressed: () {},
             ),
           ],
         ),

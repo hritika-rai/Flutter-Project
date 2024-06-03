@@ -48,7 +48,7 @@ class DonorCard extends StatelessWidget {
                   left: -60,
                   right: 0,
                   child: Image.asset(
-                    'assets/images/logo.png', // Make sure to provide the correct path to your logo
+                    'assets/images/logo.png', 
                     width: 30,
                     height: 30,
                     alignment: Alignment.topCenter,
@@ -120,9 +120,7 @@ class DonorCard extends StatelessWidget {
                 Icons.info,
                 color: Colors.blue,
               ),
-              onPressed: () {
-                // Add functionality here if needed
-              },
+              onPressed: () {},
             ),
           ],
         ),

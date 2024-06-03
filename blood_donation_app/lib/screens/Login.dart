@@ -25,15 +25,7 @@ class _LoginState extends State<Login> {
     super.initState();
     email = '';
     password = '';
-    checkUserLoggedIn(); // Check if user is already logged in
-  }
-
-  void checkUserLoggedIn() {
-    if (_auth.currentUser != null) {
-      // User is already logged in, navigate to HomePage or another page
-      //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()),);
-      print("sucess");
-    }
+    //checkUserLoggedIn(); 
   }
 
   Future<void> signInWithEmail() async {
@@ -185,9 +177,7 @@ class _LoginState extends State<Login> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {
-                          // Implement forget password functionality
-                        },
+                        onPressed: () {},
                         child: Text(
                           'Forget Password?',
                           style: TextStyle(color: Colors.red),

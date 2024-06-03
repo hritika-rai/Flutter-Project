@@ -184,7 +184,6 @@ class _RequestPageState extends ConsumerState<RequestPage> {
                       ),
                       TextFormField(
                         controller: _dateController,
-                        readOnly: true, // Make the field read-only to prevent manual text input
                         decoration: InputDecoration(
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                           suffixIcon: IconButton(

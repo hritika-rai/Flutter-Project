@@ -30,7 +30,7 @@ class IntroScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       showLoadingDialog(context);
-                      await Future.delayed(Duration(seconds: 2)); // Simulate a delay for loading
+                      await Future.delayed(Duration(seconds: 2)); 
                       hideLoadingDialog(context);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                     },

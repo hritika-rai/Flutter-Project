@@ -45,7 +45,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void _onFieldChanged() {
-    // Handle field changes here
   }
 
   void _submitForm() {
@@ -178,7 +177,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   style: TextStyle(fontSize: 20),
                                   validator: (value) => value?.isEmpty ?? true ? 'Please enter a name' : null,
                                 ),
-                                SizedBox(height: 20), // Padding between fields
+                                SizedBox(height: 20), 
                                 DropdownButtonFormField<String>(
                                   value: _selectedBloodGroup,
                                   onChanged: (value) {
@@ -199,7 +198,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   ),
                                   validator: (value) => value?.isEmpty ?? true ? 'Please select a blood group' : null,
                                 ),
-                                SizedBox(height: 20), // Padding between fields
+                                SizedBox(height: 20), 
                                 TextFormField(
                                   controller: _contactNumberController,
                                   decoration: InputDecoration(
@@ -210,7 +209,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   style: TextStyle(fontSize: 20),
                                   validator: (value) => value?.isEmpty ?? true ? 'Please enter a contact number' : null,
                                 ),
-                                SizedBox(height: 20), // Padding between fields
+                                SizedBox(height: 20),
                                 DropdownButtonFormField<String>(
                                   value: _selectedGender,
                                   onChanged: (value) {
@@ -231,7 +230,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                   ),
                                   validator: (value) => value?.isEmpty ?? true ? 'Please select a gender' : null,
                                 ),
-                                SizedBox(height: 30), // Padding before the button
+                                SizedBox(height: 30), 
                                 Center(
                                   child: ElevatedButton(
                                     onPressed: _submitForm,
@@ -286,11 +285,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   void _signOut() async {
   try {
     await FirebaseAuth.instance.signOut();
-    // Navigate back to the login page or any other desired page
     Navigator.popUntil(context, ModalRoute.withName('/'));
   } catch (e) {
     print('Error signing out: $e');
-    // Show error message if sign-out fails
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Failed to sign out: $e'),
     ));
