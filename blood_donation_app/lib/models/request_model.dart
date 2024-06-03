@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Request {
   final String userId;
   final String requestId;

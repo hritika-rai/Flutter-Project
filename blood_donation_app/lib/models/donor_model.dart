@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Donor {
   final String userId;
   final String donateId;
