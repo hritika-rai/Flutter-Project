@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../widgets/loading.dart';
 import 'HomePage.dart';
 import 'Login.dart';
 
@@ -46,6 +47,9 @@ class _SignUpState extends State<SignUp> {
         final UserCredential userCredential = await _auth.signInWithCredential(credential);
         if (userCredential.user != null) {
           print(userCredential.user);
+          showLoadingDialog(context);
+            await Future.delayed(Duration(seconds: 3)); 
+          hideLoadingDialog(context);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
         }
       }
@@ -65,7 +69,9 @@ class _SignUpState extends State<SignUp> {
           password: password,
         );
         if (userCredential.user != null) {
-          print(userCredential.user);
+          showLoadingDialog(context);
+            await Future.delayed(Duration(seconds: 3)); 
+          hideLoadingDialog(context);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserInfoPage()));
         }
       } catch (e) {

@@ -80,11 +80,11 @@ class _HomePageState extends State<HomePage> {
               ListView(
                 shrinkWrap: true,
                 children: [
-                  _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
+                  _buildListItem(context, 'Request Blood', 'assets/images/request.png', RequestPage()),
                   SizedBox(height: 20), 
-                  _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
+                  _buildListItem(context, 'Donate Blood', 'assets/images/donate.png', DonatePage()),
                   SizedBox(height: 20), 
-                  _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', OtherRequestList()),
+                  _buildListItem(context, "See People Requests", 'assets/images/PeopleRequest.png', OtherRequestList()),
                 ],
               ),
               SizedBox(height: 20),
