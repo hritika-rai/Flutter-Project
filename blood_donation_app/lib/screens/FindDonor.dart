@@ -218,7 +218,7 @@ class _FindDonorPageState extends ConsumerState<FindDonor> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
               },
@@ -227,7 +227,7 @@ class _FindDonorPageState extends ConsumerState<FindDonor> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
               },
@@ -236,7 +236,7 @@ class _FindDonorPageState extends ConsumerState<FindDonor> {
             label: 'Find Donor',
           ),
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
               },

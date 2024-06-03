@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
               },
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
               },
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Find Donor',
           ),
           BottomNavigationBarItem(
-            icon: GestureDetector(
+            icon: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
               },
