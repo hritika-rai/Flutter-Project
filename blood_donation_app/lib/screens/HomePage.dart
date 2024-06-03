@@ -1,8 +1,8 @@
 import 'package:blood_donation_app/screens/DonatePage.dart';
 import 'package:blood_donation_app/screens/DonationHistory.dart';
-import 'package:blood_donation_app/screens/FindDonor2.dart';
 import 'package:blood_donation_app/screens/RequestList.dart';
 import 'package:flutter/material.dart';
+import '../widgets/loading.dart';
 import 'FindDonor.dart';
 import 'NotificationPage.dart';
 import 'OtherRequestList.dart';
@@ -33,74 +33,76 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.notifications), 
-            onPressed: () {
+            onPressed: () async {
+              showLoadingDialog(context);
+                await Future.delayed(Duration(seconds: 3)); 
+              hideLoadingDialog(context);
               Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationPage()));
             },
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16,0,16,16),
-        child: Column(
-          children: [
-            
-            SizedBox(height: 20),
-            Container(
-              height: 170,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 237, 232),
-                // color: Color.fromARGB(255, 255, 245, 240),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Image.asset(
-                      'assets/images/logo.jpg',
-                      height: 100,
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        'The measure of life is not its DURATION but its DONATION',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16,0,16,16),
+          child: Column(
+            children: [
+              
+              SizedBox(height: 20),
+              Container(
+                height: 170,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 241, 225, 220),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Image.asset(
+                        'assets/images/home.jpg',
+                        height: 100,
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          'The measure of life is not its DURATION but its DONATION',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ), 
+              SizedBox(height: 25),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
+                  SizedBox(height: 20), 
+                  _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
+                  SizedBox(height: 20), 
+                  _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', OtherRequestList()),
                 ],
               ),
-            ), 
-            SizedBox(height: 25),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                _buildListItem(context, 'Request', 'assets/images/request.png', RequestPage()),
-                SizedBox(height: 20), 
-                _buildListItem(context, 'Donate', 'assets/images/logo.png', DonatePage()),
-                SizedBox(height: 20), 
-                _buildListItem(context, "Peoples's Request", 'assets/images/logo.png', OtherRequestList()),
-              ],
-            ),
-            SizedBox(height: 20),
-            GridView(
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
+              SizedBox(height: 20),
+              GridView(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                ),
+                children: [
+                  _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',DonationHistory()),
+                  _buildGridItem(context, 'Your Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
+                ],
               ),
-              children: [
-                //_buildGridItem(context, 'Blood banks', 'assets/images/bloodbank.png', HomePage()),
-                //_buildGridItem(context, 'Hospital', 'assets/images/Hospital.png',HomePage()),
-                _buildGridItem(context, 'Donation History', 'assets/images/DonationHistory.png',DonationHistory()),
-                _buildGridItem(context, 'Your Blood Request List', 'assets/images/BloodRequestList.png', RequestList()),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -139,7 +141,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildGridItem(BuildContext context, String title, String imagePath, Widget page) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+        showLoadingDialog(context);
+          await Future.delayed(Duration(seconds: 2)); 
+        hideLoadingDialog(context);       
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: Container(
@@ -172,7 +177,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildListItem(BuildContext context, String title, String imagePath, Widget page) {
       return InkWell(
-        onTap: () {
+        onTap: () async {
+          showLoadingDialog(context);
+            await Future.delayed(Duration(seconds: 2)); 
+          hideLoadingDialog(context);
           Navigator.push(context, MaterialPageRoute(builder: (context) => page));
         },
         child: Container(

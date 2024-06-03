@@ -231,7 +231,7 @@ class _FindDonorPageState extends ConsumerState<FindDonor> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => FindDonor()));
               },
-              child: Icon(Icons.search, color: Colors.red),
+              child: Icon(Icons.search, color: Colors.red,),
             ),
             label: 'Find Donor',
           ),

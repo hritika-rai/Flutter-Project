@@ -14,6 +14,8 @@ UserRepository userRepository(UserRepositoryRef ref) {
 class UserNotifier extends _$UserNotifier {
   late final UserRepository repository;
 
+  UserNotifier() : super();
+
   @override
   AsyncValue<Users?> build() {
     repository = ref.watch(userRepositoryProvider);

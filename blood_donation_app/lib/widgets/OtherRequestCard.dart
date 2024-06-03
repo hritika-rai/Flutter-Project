@@ -61,6 +61,7 @@ class OtherRequestCard extends ConsumerWidget {
       Notifications notification = Notifications(
         notificationId: notificationId, 
         userId: request.userId,
+        requestId: request.requestId,
         body: 'Your blood donation request has been accepted by ${user?.name}. You can contact at ${user?.contactNumber}',
         timestamp: DateTime.now(),
       );

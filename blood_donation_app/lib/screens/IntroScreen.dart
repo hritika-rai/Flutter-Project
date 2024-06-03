@@ -1,5 +1,6 @@
 import 'package:blood_donation_app/screens/SignUp.dart';
 import 'package:flutter/material.dart';
+import '../widgets/loading.dart';
 import 'Login.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -27,11 +28,14 @@ class IntroScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 50.0),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
+                    onPressed: () async {
+                      showLoadingDialog(context);
+                      await Future.delayed(Duration(seconds: 2)); // Simulate a delay for loading
+                      hideLoadingDialog(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, 
+                      backgroundColor: Colors.white,
                       side: BorderSide(color: Colors.red),
                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                       minimumSize: Size(300, 40),
@@ -43,11 +47,14 @@ class IntroScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20.0),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SignUp()));
+                    onPressed: () async {
+                      showLoadingDialog(context);
+                      await Future.delayed(Duration(seconds: 3)); 
+                      hideLoadingDialog(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, 
+                      backgroundColor: Colors.red,
                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                       minimumSize: Size(300, 40),
                     ),
@@ -65,9 +72,9 @@ class IntroScreen extends StatelessWidget {
             bottom: 0,
             child: Image.asset(
               'assets/images/waves.jpg',
-              width: MediaQuery.of(context).size.width, 
-              height: 150, 
-              fit: BoxFit.cover, 
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              fit: BoxFit.cover,
             ),
           ),
         ],

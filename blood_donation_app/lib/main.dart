@@ -6,31 +6,6 @@ import 'firebase_options.dart';
 import './screens/SignUp.dart';
 import 'screens/IntroScreen.dart';
 
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-  
-//   // Check if Firebase apps are already initialized
-//   if (Firebase.apps.isEmpty) {
-//     await Firebase.initializeApp(
-//       options: DefaultFirebaseOptions.currentPlatform,
-//     );
-//   }
-  
-//   runApp(const MyApp());
-// }
-
-// void main() async {
-//   runApp(const MyApp());
-// }
-
-// Future<void> initializeFirebase() async {
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-// }
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeFirebase();
@@ -46,14 +21,6 @@ Future<void> initializeFirebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 }
-
-// void main() {
-//   runApp(
-//     const ProviderScope(
-//       child: MyApp(),
-//     ),
-//   );
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
