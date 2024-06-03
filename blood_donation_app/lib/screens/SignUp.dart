@@ -50,7 +50,7 @@ class _SignUpState extends State<SignUp> {
           showLoadingDialog(context);
             await Future.delayed(Duration(seconds: 3)); 
           hideLoadingDialog(context);
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserInfoPage()));
         }
       }
     } catch (e) {
