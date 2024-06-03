@@ -129,7 +129,7 @@ Widget _buildDetailRow(String label, String value) {
               Positioned(
                 left: 320,
                 top: 40,
-                child: GestureDetector(
+                child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },
@@ -183,7 +183,7 @@ Widget _buildDetailRow(String label, String value) {
                       itemCount: notifications.length,
                       itemBuilder: (context, index) {
                         final notification = notifications[index];
-                        return GestureDetector(
+                        return InkWell(
                           onTap: () {
                             _showRequestDetails(notification.requestId); 
                           },

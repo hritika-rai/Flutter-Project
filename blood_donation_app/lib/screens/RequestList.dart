@@ -46,7 +46,7 @@ class _RequestListState extends ConsumerState<RequestList> {
               Positioned(
                 left: 320,
                 top: 40,
-                child: GestureDetector(
+                child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },

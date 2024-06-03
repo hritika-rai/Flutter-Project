@@ -104,7 +104,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             Positioned(
                               left: 320,
                               top: 40,
-                              child: GestureDetector(
+                              child: InkWell(
                                 onTap: () {
                                   Navigator.of(context).pop();
                                 },

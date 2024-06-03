@@ -30,7 +30,7 @@ class DonationHistory extends ConsumerWidget {
               Positioned(
                 left: 320,
                 top: 40,
-                child: GestureDetector(
+                child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },

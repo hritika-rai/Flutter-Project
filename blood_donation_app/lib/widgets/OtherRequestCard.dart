@@ -202,7 +202,7 @@ class OtherRequestCard extends ConsumerWidget {
             ),
             Divider(), 
             SizedBox(height: 10),
-            GestureDetector(
+            InkWell(
               onTap: () => handleAcceptRequest(ref, context),
               child: Container(
                 alignment: Alignment.center,
